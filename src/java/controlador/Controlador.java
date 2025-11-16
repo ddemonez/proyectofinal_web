@@ -28,25 +28,26 @@ public class Controlador extends HttpServlet {
                 break;
 
             case "nuevo":
-                req.getRequestDispatcher("formAgregar.jsp").forward(req, resp);
+                req.getRequestDispatcher("agregar.jsp").forward(req, resp);
                 break;
 
             case "editar":
-                int idEditar = Integer.parseInt(req.getParameter("id"));
-                req.setAttribute("dato", dao.obtenerPorId(idEditar));
-                req.getRequestDispatcher("formEditar.jsp").forward(req, resp);
+                int codigoEditar = Integer.parseInt(req.getParameter("codigo"));
+                Reparacion dato = dao.obtener(codigoEditar);
+                req.setAttribute("dato", dato);
+                req.getRequestDispatcher("editar.jsp").forward(req, resp);
                 break;
 
             case "eliminar":
-                int idEliminar = Integer.parseInt(req.getParameter("id"));
-                dao.eliminar(idEliminar);
+                int codigoEliminar = Integer.parseInt(req.getParameter("codigo"));
+                dao.eliminar(codigoEliminar);
                 resp.sendRedirect("Controlador?accion=listar");
                 break;
 
-            case "pdf":
+            case "reporte":
                 reportes.GenerarReportePDF.crearReporte();
                 req.getRequestDispatcher("listar.jsp").forward(req, resp);
-            break;
+                break;
 
             default:
                 req.getRequestDispatcher("index.jsp").forward(req, resp);
@@ -60,14 +61,13 @@ public class Controlador extends HttpServlet {
         String accion = req.getParameter("accion");
 
         switch (accion) {
-
-            case "agregar":
+            case "insertar":
                 r.setNombre_cliente(req.getParameter("nombre"));
                 r.setModelo_moto(req.getParameter("modelo"));
                 r.setTipo_servicio(req.getParameter("tipo"));
                 r.setCosto(Double.parseDouble(req.getParameter("costo")));
                 r.setFecha_ingreso(req.getParameter("fecha"));
-                dao.agregar(r);
+                dao.insertar(r);
                 resp.sendRedirect("Controlador?accion=listar");
                 break;
 
@@ -83,4 +83,5 @@ public class Controlador extends HttpServlet {
                 break;
         }
     }
+
 }

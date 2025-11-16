@@ -40,46 +40,25 @@ public class ReparacionDao {
         return lista;
     }
 
-    // AGREGAR
-    public boolean agregar(Reparacion r) {
-        String sql = "INSERT INTO reparaciones(nombre_cliente, modelo_moto, tipo_servicio, costo, fecha_ingreso) "
-                   + "VALUES(?,?,?,?,?)";
-        try {
-            con = cn.conectar();
-            ps = con.prepareStatement(sql);
-            ps.setString(1, r.getNombre_cliente());
-            ps.setString(2, r.getModelo_moto());
-            ps.setString(3, r.getTipo_servicio());
-            ps.setDouble(4, r.getCosto());
-            ps.setString(5, r.getFecha_ingreso());
-            ps.executeUpdate();
-            return true;
-
-        } catch (Exception e) {
-            System.out.println("Error agregar: " + e.getMessage());
-            return false;
-        }
-    }
-
-    // OBTENER POR ID (para editar)
-    public Reparacion obtenerPorId(int id) {
-        Reparacion r = null;
+    // OBTENER 1 REGISTRO PARA EDITAR
+    public Reparacion obtener(int codigo) {
         String sql = "SELECT * FROM reparaciones WHERE codigo_servicio=?";
+        Reparacion r = null;
 
         try {
             con = cn.conectar();
             ps = con.prepareStatement(sql);
-            ps.setInt(1, id);
+            ps.setInt(1, codigo);
             rs = ps.executeQuery();
 
             if (rs.next()) {
                 r = new Reparacion(
-                    rs.getInt("codigo_servicio"),
-                    rs.getString("nombre_cliente"),
-                    rs.getString("modelo_moto"),
-                    rs.getString("tipo_servicio"),
-                    rs.getDouble("costo"),
-                    rs.getString("fecha_ingreso")
+                        rs.getInt("codigo_servicio"),
+                        rs.getString("nombre_cliente"),
+                        rs.getString("modelo_moto"),
+                        rs.getString("tipo_servicio"),
+                        rs.getDouble("costo"),
+                        rs.getString("fecha_ingreso")
                 );
             }
 
@@ -89,11 +68,10 @@ public class ReparacionDao {
         return r;
     }
 
-    // ACTUALIZAR
-    public boolean actualizar(Reparacion r) {
-        String sql = "UPDATE reparaciones SET nombre_cliente=?, modelo_moto=?, tipo_servicio=?, costo=?, fecha_ingreso=? "
-                   + "WHERE codigo_servicio=?";
-        
+    // INSERTAR
+    public boolean insertar(Reparacion r) {
+        String sql = "INSERT INTO reparaciones (nombre_cliente, modelo_moto, tipo_servicio, costo, fecha_ingreso) VALUES (?, ?, ?, ?, ?)";
+
         try {
             con = cn.conectar();
             ps = con.prepareStatement(sql);
@@ -102,7 +80,31 @@ public class ReparacionDao {
             ps.setString(3, r.getTipo_servicio());
             ps.setDouble(4, r.getCosto());
             ps.setString(5, r.getFecha_ingreso());
+
+            ps.executeUpdate();
+            return true;
+
+        } catch (Exception e) {
+            System.out.println("Error insertar: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // ACTUALIZAR
+    public boolean actualizar(Reparacion r) {
+        String sql = "UPDATE reparaciones SET nombre_cliente=?, modelo_moto=?, tipo_servicio=?, costo=?, fecha_ingreso=? WHERE codigo_servicio=?";
+
+        try {
+            con = cn.conectar();
+            ps = con.prepareStatement(sql);
+
+            ps.setString(1, r.getNombre_cliente());
+            ps.setString(2, r.getModelo_moto());
+            ps.setString(3, r.getTipo_servicio());
+            ps.setDouble(4, r.getCosto());
+            ps.setString(5, r.getFecha_ingreso());
             ps.setInt(6, r.getCodigo_servicio());
+
             ps.executeUpdate();
             return true;
 
@@ -113,12 +115,13 @@ public class ReparacionDao {
     }
 
     // ELIMINAR
-    public boolean eliminar(int id) {
+    public boolean eliminar(int codigo) {
         String sql = "DELETE FROM reparaciones WHERE codigo_servicio=?";
+
         try {
             con = cn.conectar();
             ps = con.prepareStatement(sql);
-            ps.setInt(1, id);
+            ps.setInt(1, codigo);
             ps.executeUpdate();
             return true;
 

@@ -8,51 +8,37 @@
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
+
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Listado de Reparaciones</title>
-    <style>
-        table {
-            width: 90%;
-            border-collapse: collapse;
-            margin: 20px auto;
-            font-family: Arial;
-        }
-        th {
-            background-color: #005ab3;
-            color: white;
-            padding: 8px;
-        }
-        td {
-            border: 1px solid #ccc;
-            padding: 6px;
-        }
-        h2 {
-            text-align: center;
-            font-family: Arial;
-        }
-    </style>
+    <title>Listado</title>
 </head>
 <body>
 
-<h2>LISTADO DE REPARACIONES</h2>
-<div style="text-align:center; margin-bottom: 20px;">
-    <a href="Controlador?accion=pdf" 
-       style="padding:10px 20px; background:#005ab3; color:white; text-decoration:none; border-radius:5px;">
-       Generar Reporte PDF
+<h1 align="center">LISTADO DE REPARACIONES</h1>
+
+<center>
+    <a href="Controlador?accion=nuevo">
+        <button>Agregar Nueva Reparación</button>
     </a>
 </div>
 
+    <a href="Controlador?accion=reporte">
+        <button>Generar Reporte PDF</button>
+    </a>
+</center>
 
-<table>
-    <tr>
+<br><br>
+
+<table border="1" width="90%" align="center">
+    <tr style="background:#005ab3; color:white;">
         <th>Código</th>
         <th>Cliente</th>
-        <th>Modelo Moto</th>
-        <th>Tipo Servicio</th>
+        <th>Modelo</th>
+        <th>Servicio</th>
         <th>Costo</th>
-        <th>Fecha Ingreso</th>
+        <th>Fecha</th>
         <th>Acciones</th>
     </tr>
 
@@ -60,7 +46,7 @@
         List<Reparacion> lista = (List<Reparacion>) request.getAttribute("lista");
 
         if (lista != null) {
-            for (Reparacion r : lista) {
+        for (Reparacion r : lista) {
     %>
 
     <tr>

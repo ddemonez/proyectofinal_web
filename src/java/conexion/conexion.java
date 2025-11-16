@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 
 public class conexion {
 
-    private String url = "jdbc:mysql://localhost:3306/taller_moto";
+    private String url = "jdbc:mariadb://localhost:3333/taller_moto";
     private String user = "root";
     private String pass = "porsche911$";
     private String driver = "org.mariadb.jdbc.Driver";
